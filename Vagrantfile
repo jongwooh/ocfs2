@@ -22,9 +22,8 @@
 VAGRANTFILE_API_VERSION = "2"
 
 # Box metadata location and box name
-#BOX_URL = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/8.json"
-BOX_NAME = "rockylinux/8"
-BOX_VERSION = "5.0.0"
+BOX_URL = "https://oracle.github.io/vagrant-projects/boxes/oraclelinux/8.json"
+BOX_NAME = "oraclelinux/8"
 
 # define hostname
 
@@ -93,16 +92,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define hostname do |cfg|
       cfg.vm.provider :virtualbox do |vb, override|
         config.vm.box = BOX_NAME
-        config.vm.box_version = BOX_VERSION
-        #config.vm.box_url = BOX_URL
+        config.vm.box_url = BOX_URL
         #config.ssh.username = "oracle"
         #config.ssh.private_key_path = "./vagrant-key"
         override.vm.network :private_network, ip: "#{info[:ip]}"
         override.vm.hostname = hostname
         vb.name = hostname
         if vb.name == 'control'
-          if(!File.exists?('storage1.vdi'))
-            vb.customize ['createhd', '--filename', 'storage1.vdi', '--size', 10 * 1024]
+          if(!File.exists?('storage0.vdi'))
+            vb.customize ['createhd', '--filename', 'storage0.vdi', '--size', 10 * 1024]
             vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', 'storage1.vdi']
           end
         end
